@@ -119,17 +119,27 @@ def cellIsFree(pos):
     return board[pos] == ' '
 
 
-def isWinner(bo, le):
+def isWinner(board, le):
     # 3x3
     if rangeNum == 10:
-        return (bo[7] == le and bo[8] == le and bo[9] == le) or (
-                bo[4] == le and bo[5] == le and bo[6] == le) or (
-                       bo[1] == le and bo[2] == le and bo[3] == le) or (
-                       bo[1] == le and bo[4] == le and bo[7] == le) or (
-                       bo[2] == le and bo[5] == le and bo[8] == le) or (
-                       bo[3] == le and bo[6] == le and bo[6] == le) or (
-                       bo[1] == le and bo[5] == le and bo[9] == le) or (
-                       bo[3] == le and bo[5] == le and bo[7] == le)
+        if board[1] == board[2] and board[1] == board[3] and board[1] == le:
+            return True
+        elif board[4] == board[5] and board[4] == board[6] and board[4] == le:
+            return True
+        elif board[7] == board[8] and board[7] == board[9] and board[7] == le:
+            return True
+        elif board[1] == board[4] and board[1] == board[7] and board[1] == le:
+            return True
+        elif board[2] == board[5] and board[2] == board[8] and board[2] == le:
+            return True
+        elif board[3] == board[6] and board[3] == board[9] and board[3] == le:
+            return True
+        elif board[1] == board[5] and board[1] == board[9] and board[1] == le:
+            return True
+        elif board[7] == board[5] and board[7] == board[3] and board[7] == le:
+            return True
+        else:
+            return False
     elif rangeNum == 26:
         # 5x5
         i = 1
@@ -137,7 +147,7 @@ def isWinner(bo, le):
         while i != 25:
             if board[i] == board[i + 1] and board[i + 2] == board[i + 1] and board[i + 2] == le:
                 return 1
-            elif board[i] == board[i + 1] and board[i + 2] == board[i + 1] and board[i + 2] == bot:
+            elif board[i] == board[i + 1] and board[i + 2] == board[i + 1] and board[i + 2] == le:
                 return -1
             else:
                 if i % 5 == 3:
@@ -148,9 +158,9 @@ def isWinner(bo, le):
         i = 6
         # Columns
         while i != 25:
-            if board[i] == board[i - 5] and board[i + 5] == board[i] and board[i - 5] == player:
+            if board[i] == board[i - 5] and board[i + 5] == board[i] and board[i - 5] == le:
                 return 1
-            elif board[i] == board[i - 5] and board[i + 5] == board[i] and board[i - 5] == bot:
+            elif board[i] == board[i - 5] and board[i + 5] == board[i] and board[i - 5] == le:
                 return -1
             else:
                 if i in [16, 17, 18, 19]:
@@ -163,17 +173,17 @@ def isWinner(bo, le):
         x = [1, 2, 3, 6, 11, 7, 8, 12, 13]
 
         for i in x:
-            if board[i] == board[i + 6] and board[i + 12] == board[i] and board[i] == player:
+            if board[i] == board[i + 6] and board[i + 12] == board[i] and board[i] == le:
                 return 1
-            elif board[i] == board[i + 6] and board[i + 12] == board[i] and board[i] == bot:
+            elif board[i] == board[i + 6] and board[i + 12] == board[i] and board[i] == le:
                 return -1
 
         x = [3, 4, 5, 10, 15, 9, 8, 14, 13]
 
         for i in x:
-            if board[i] == board[i + 4] and board[i + 8] == board[i] and board[i] == player:
+            if board[i] == board[i + 4] and board[i + 8] == board[i] and board[i] == le:
                 return 1
-            elif board[i] == board[i + 4] and board[i + 8] == board[i] and board[i] == bot:
+            elif board[i] == board[i + 4] and board[i + 8] == board[i] and board[i] == le:
                 return -1
 
     elif rangeNum == 50:
@@ -182,9 +192,9 @@ def isWinner(bo, le):
         i = 1
 
         while i != 50:
-            if board[i] == board[i + 1] and board[i + 2] == board[i + 1] and board[i + 2] == player:
+            if board[i] == board[i + 1] and board[i + 2] == board[i + 1] and board[i + 2] == le:
                 return 1
-            elif board[i] == board[i + 1] and board[i + 2] == board[i + 1] and board[i + 2] == bot:
+            elif board[i] == board[i + 1] and board[i + 2] == board[i + 1] and board[i + 2] == le:
                 return -1
             else:
                 if i % 7 == 5:
@@ -195,9 +205,9 @@ def isWinner(bo, le):
         # Columns
         i = 8
         while i != 49:
-            if board[i] == board[i - 7] and board[i + 7] == board[i] and board[i - 7] == player:
+            if board[i] == board[i - 7] and board[i + 7] == board[i] and board[i - 7] == le:
                 return 1
-            elif board[i] == board[i - 7] and board[i + 7] == board[i] and board[i - 7] == bot:
+            elif board[i] == board[i - 7] and board[i + 7] == board[i] and board[i - 7] == le:
                 return -1
             else:
                 if i in [36, 37, 38, 39, 40, 41]:
@@ -209,9 +219,9 @@ def isWinner(bo, le):
         i = 1
 
         while i <= 33:
-            if board[i] == board[i + 8] and board[i + 16] == board[i] and board[i] == player:
+            if board[i] == board[i + 8] and board[i + 16] == board[i] and board[i] == le:
                 return 1
-            elif board[i] == board[i + 8] and board[i + 16] == board[i] and board[i] == bot:
+            elif board[i] == board[i + 8] and board[i + 16] == board[i] and board[i] == le:
                 return -1
             else:
                 if i % 7 == 6:
@@ -222,9 +232,9 @@ def isWinner(bo, le):
         i = 3
 
         while i <= 35:
-            if board[i] == board[i + 6] and board[i + 12] == board[i] and board[i] == player:
+            if board[i] == board[i + 6] and board[i + 12] == board[i] and board[i] == le:
                 return 1
-            elif board[i] == board[i + 6] and board[i + 12] == board[i] and board[i] == bot:
+            elif board[i] == board[i + 6] and board[i + 12] == board[i] and board[i] == le:
                 return -1
             else:
                 if i % 7 == 0:
@@ -238,86 +248,86 @@ def isWinner(bo, le):
 def AIMove():
     possibleMoves = [x for x, letter in enumerate(board) if letter == ' ' and x != 0]
 
-    for let in ['O', 'X']:
-        for i in possibleMoves:
-            boardCopy = board[:]
-            boardCopy[i] = let
-            if isWinner(board, let):
-                move = i
-                return move
+    # for let in ['O', 'X']:
+    #     for i in possibleMoves:
+    #         boardCopy = board[:]
+    #         boardCopy[i] = let
+    #         if isWinner(board, let):
+    #             move = i
+    #             return move
     cornersOpen = []
-    for i in possibleMoves:
-        if i % 2 == 0:
-            cornersOpen.append(i)
-    if len(cornersOpen) > 0:
-        move = selectRandom(cornersOpen)
-        return move
+    # for i in possibleMoves:
+    #     if i % 2 == 0:
+    #         cornersOpen.append(i)
+    # if len(cornersOpen) > 0:
+    #     move = selectRandom(cornersOpen)
+    #     return move
+    #
+    # if 5 in possibleMoves:
+    #     move = 5
+    #     return move
+    #
+    # edgesOpen = []
+    # for i in possibleMoves:
+    #     if i % 2 == 1:
+    #         edgesOpen.append(i)
+    # if len(edgesOpen) > 0:
+    #     move = selectRandom(edgesOpen)
+    #     return move
+    bestScore = -800
+    bestMove = 0
+    i = 1
+    while i < rangeNum:
+        if board[i] == ' ':
+            board[i] = bot
+            score = minimax(board, 0, False)
+            board[i] = ' '
+            if score > bestScore:
+                bestScore = score
+                bestMove = i
+        i += 1
 
-    if 5 in possibleMoves:
-        move = 5
-        return move
-
-    edgesOpen = []
-    for i in possibleMoves:
-        if i % 2 == 1:
-            edgesOpen.append(i)
-    if len(edgesOpen) > 0:
-        move = selectRandom(edgesOpen)
-        return move
-
-
-#     bestScore = -800
-#     bestMove = 0
-#     i = 1
-#     while i < rangeNum:
-#         if board[i] == ' ':
-#             board[i] = bot
-#             score = minimax(board, 0, False)
-#             board[i] = ' '
-#             if score > bestScore:
-#                 bestScore = score
-#                 bestMove = i
-#         i += 1
-#
-#     # insertLetter(bot, bestMove)
-#     return bestMove
-#
-#
-# def minimax(board, depth, isMaximizing):
-#     if isWinner(board, bot):
-#         return 1
-#     elif isWinner(board, player):
-#         return -1
-#     elif isWinner(board, player) == 0:
-#         return 0
-#
-#     if isMaximizing:
-#         bestScore = -800
-#         for key in board.keys():
-#             if board[key] == ' ':
-#                 board[key] = bot
-#                 score = minimax(board, depth + 1, False)
-#                 board[key] = ' '
-#                 if score > bestScore:
-#                     bestScore = score
-#         return bestScore
-#
-#     else:
-#         bestScore = 800
-#         for key in board.keys():
-#             if board[key] == ' ':
-#                 board[key] = player
-#                 score = minimax(board, depth + 1, True)
-#                 board[key] = ' '
-#                 if score < bestScore:
-#                     bestScore = score
-#         return bestScore
+    # insertLetter(bot, bestMove)
+    return bestMove
 
 
-def selectRandom(x):
-    ln = len(x)
-    r = random.randrange(0, ln)
-    return x[r]
+def minimax(board, depth, isMaximizing):
+    if isWinner(board, bot):
+        return 1
+    elif isWinner(board, player):
+        return -1
+    elif isWinner(board, player) == 0:
+        return 0
+
+    if isMaximizing:
+        bestScore = -800
+        i = 1
+        while i < rangeNum:
+            if board[i] == ' ':
+                board[i] = bot
+                score = minimax(board, depth + 1, False)
+                board[i] = ' '
+                if score > bestScore:
+                    bestScore = score
+        return bestScore
+
+    else:
+        bestScore = 800
+        i = 1
+        while i < rangeNum:
+            if board[i] == ' ':
+                board[i] = player
+                score = minimax(board, depth + 1, True)
+                board[i] = ' '
+                if score < bestScore:
+                    bestScore = score
+        return bestScore
+
+
+# def selectRandom(x):
+#     ln = len(x)
+#     r = random.randrange(0, ln)
+#     return x[r]
 
 
 def isBoardFull(board):
