@@ -11,7 +11,7 @@ while True:
     try:
         size = input('Choose a size of board:\n A: 3x3\n B: 5x5 \n C: 7x7\n')
         if size == 'exit':
-            print('Player left tha game')
+            print('Player left the game')
             quit()
         if size == 'a' or size == 'A':
             rangeNum = 10
@@ -34,7 +34,7 @@ while True:
     try:
         playerSide = input('Choose side by writing X or O\n')
         if playerSide == 'exit':
-            print('Player left tha game')
+            print('Player left the game')
             quit()
         if playerSide == 'x' or playerSide == 'X':
             player = 'X'
@@ -109,17 +109,51 @@ def printBoard(desk):
 
 
 board = [' ' for x in range(rangeNum)]
+board[0] = 'n'
+
+
+def tieCheck():
+    i = 0
+    while i < rangeNum - 1:
+        i += 1
+        if board[i] == ' ':
+            return False
+    return True
 
 
 def insertLetter(char, pos):
-    board[pos] = char
+    if cellIsFree(pos):
+        board[pos] = char
+        # printBoard(board)
+        # if tieCheck():
+        #     print('Tie!')
+        #     quit()
+        if checkForWin():
+            if char == player:
+                print('Player wins\n')
+                exit()
+            else:
+                print('Bott wins\n')
+                exit()
+
+        # if tieCheck():
+        #     print('Tie1')
+        #     exit()
+
+        return
+
+    else:
+        print("Can't insert there!\n")
+        pos = int(input('Enter new position\n'))
+        insertLetter(char, pos)
+        return
 
 
 def cellIsFree(pos):
     return board[pos] == ' '
 
 
-def isWinner(board, le):
+def isWinner(le):
     # 3x3
     if rangeNum == 10:
         if board[1] == board[2] and board[1] == board[3] and board[1] == le:
@@ -246,7 +280,7 @@ def isWinner(board, le):
 
 
 def AIMove():
-    possibleMoves = [x for x, letter in enumerate(board) if letter == ' ' and x != 0]
+    # possibleMoves = [x for x, letter in enumerate(board) if letter == ' ' and x != 0]
 
     # for let in ['O', 'X']:
     #     for i in possibleMoves:
@@ -255,7 +289,7 @@ def AIMove():
     #         if isWinner(board, let):
     #             move = i
     #             return move
-    cornersOpen = []
+    # cornersOpen = []
     # for i in possibleMoves:
     #     if i % 2 == 0:
     #         cornersOpen.append(i)
@@ -287,16 +321,16 @@ def AIMove():
                 bestMove = i
         i += 1
 
-    # insertLetter(bot, bestMove)
-    return bestMove
+    insertLetter(bot, bestMove)
+    return
 
 
 def minimax(board, depth, isMaximizing):
-    if isWinner(board, bot):
+    if isWinner(bot):
         return 1
-    elif isWinner(board, player):
+    elif isWinner(player):
         return -1
-    elif isWinner(board, player) == 0:
+    elif isBoardFull():
         return 0
 
     if isMaximizing:
@@ -309,6 +343,7 @@ def minimax(board, depth, isMaximizing):
                 board[i] = ' '
                 if score > bestScore:
                     bestScore = score
+            i += 1
         return bestScore
 
     else:
@@ -321,7 +356,16 @@ def minimax(board, depth, isMaximizing):
                 board[i] = ' '
                 if score < bestScore:
                     bestScore = score
+            i += 1
         return bestScore
+
+
+def checkForWin():
+    for i in range(rangeNum - 1):
+        if isWinner(i) == 1 or isWinner(i) == -1:
+            return True
+        else:
+            return False
 
 
 # def selectRandom(x):
@@ -330,11 +374,11 @@ def minimax(board, depth, isMaximizing):
 #     return x[r]
 
 
-def isBoardFull(board):
-    if board.count(' ') > 1:
-        return False
-    else:
-        return True
+def isBoardFull():
+    for key in range(rangeNum):
+        if board[key] == ' ':
+            return False
+    return True
 
 
 def playerMove():
@@ -342,7 +386,7 @@ def playerMove():
     while run:
         move = input('Select position to place ' + player + ' (1-' + str(rangeNum - 1) + '): ')
         if move == 'exit':
-            print('Player left tha game')
+            print('Player left the game')
             quit()
         try:
             move = int(move)
@@ -356,41 +400,58 @@ def playerMove():
                 print('Type a number within range (1-' + str(rangeNum - 1) + ')')
         except:
             print('Number is required')
+    # run = True
+    # while run:
+    #     pos = input('Select position to place ' + player + ' (1-' + str(rangeNum - 1) + '): ')
+    #     if pos == 'exit':
+    #         print('Player left the game')
+    #         quit()
+    #     try:
+    #         move = int(pos)
+    #         if 0 < move < rangeNum:
+    #             if cellIsFree(move):
+    #                 run = False
+    #                 insertLetter(player, move)
+    #             else:
+    #                 print('This cell is occupied')
+    #         else:
+    #             print('Type a number within range (1-' + str(rangeNum - 1) + ')')
+    #     except:
+    #         print('Number is required')
+    #     insertLetter(player, pos)
 
 
-def main():
-    # print('Welcome to Tic-Tac-Toe game')
-    # printBoard(board)
+if bot == 'X':
 
-    if bot == 'X':
-        insertLetter(bot, AIMove())
-        print('Computer placed an ' + bot + ' in position', AIMove(), ':')
+    AIMove()
+    printBoard(board)
+else:
+    printBoard(board)
+
+while not (checkForWin()):
+    # AIMove()
+    # playerMove()
+
+    if isBoardFull():
+        print('Tie')
+        exit()
+
+    if not (isWinner(bot)):
+        playerMove()
         printBoard(board)
     else:
-        printBoard(board)
+        print('AI player won!')
+        break
 
-    while not (isBoardFull(board)):
-        if not (isWinner(board, bot)):
-            playerMove()
-            printBoard(board)
-        else:
-            print('AI player won!')
-            break
-
-        if not (isWinner(board, player)):
-            move = AIMove()
-            if move == 0:
-                print('Tie')
-            else:
-                insertLetter(bot, move)
-                print('Computer placed an O in position', move, ':')
-                printBoard(board)
-        else:
-            print('You won!')
-            break
-
-    if isBoardFull(board):
+    if isBoardFull():
         print('Tie')
+        exit()
 
+    if not (isWinner(player)):
+        AIMove()
+        # print('Computer placed an O in position', move, ':')
+        printBoard(board)
+    else:
+        print('You won!')
+        break
 
-main()
